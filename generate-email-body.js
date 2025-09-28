@@ -1,6 +1,6 @@
 const fs = require('fs');
 const path = require('path');
-const { parseLottoData } = require('./js/lotto-analyzer.js');
+const { parseLottoData } = require('./lotto-analyzer.js');
 const { generateRecommendedNumbers } = require('./js/recommend.js');
 
 function createEmailBody() {
