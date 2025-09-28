@@ -22,30 +22,38 @@ jobs:
       - name: Checkout repository
         uses: actions/checkout@v4
 
-      # 2. ✅ Node.js 환경 설정으로 변경
+      # 2. Node.js 환경 설정
       - name: Setup Node.js
         uses: actions/setup-node@v4
         with:
-          # Node.js 20 버전을 사용
           node-version: '20'
-          # npm 패키지를 캐싱하여 속도 향상
           cache: 'npm'
 
-      # 3. ✅ npm 패키지 설치 단계 추가
+      # 3. npm 패키지 설치
       - name: Install dependencies
         run: npm install
 
-      # 4. ✅ JavaScript 다운로더 스크립트 실행으로 변경
+      # 4. JavaScript 다운로더 스크립트 실행
       - name: Run JavaScript Downloader
         run: node download.js
 
-      # 5. 변경된 데이터 파일을 Git에 다시 커밋 및 푸시
+      # 5. ✅ [추가] 데이터를 SQL 파일로 추출
+      - name: Export data to SQL
+        run: node export-sql.js
+
+      # 6. ✅ [추가] 데이터를 JSON 파일로 추출
+      - name: Export data to JSON
+        run: node export-json.js
+
+      # 7. 변경된 데이터 파일들을 Git에 다시 커밋 및 푸시
       - name: Commit and push if changed
         run: |
           # 봇의 이름과 이메일 설정
           git config --global user.name 'github-actions[bot]'
           git config --global user.email 'github-actions[bot]@users.noreply.github.com'
-          # ✅ 변경된 파일 이름을 lotto_data.html로 수정
-          git add lotto_data.html
+          # ✅ [수정] 생성된 모든 데이터 파일을 스테이징
+          git add lotto_data.html lotto_data.sql lotto_data.json
           # 변경사항이 있을 경우에만 커밋
-          git diff
+          git diff-index --quiet HEAD || git commit -m "📊 Lotto data updated automatically"
+          # 저장소에 푸시
+          git push
