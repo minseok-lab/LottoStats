@@ -59,8 +59,11 @@ jobs:
 
       # 7. 파일 내용을 읽어서 결과 변수로 저장하는 단계
       - name: Read email body from file
-        id: read_email_body # 이 단계의 ID를 지정
-        run: echo "EMAIL_BODY=$(cat email-body.txt)" >> $GITHUB_OUTPUT
+        id: read_email_body
+        run: |
+          echo "EMAIL_BODY<<EOF" >> $GITHUB_OUTPUT
+          cat email-body.txt >> $GITHUB_OUTPUT
+          echo "EOF" >> $GITHUB_OUTPUT
 
       # 8. 작업 성공 시 이메일 알림 보내기
       - name: Send notification email on success
