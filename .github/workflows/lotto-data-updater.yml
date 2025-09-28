@@ -1,0 +1,51 @@
+# 워크플로우의 이름
+name: Update Lotto Data Weekly
+
+# 워크플로우 실행 조건
+on:
+  # 수동으로 실행할 수 있도록 버튼을 만듦
+  workflow_dispatch:
+  # 스케줄에 따라 주기적으로 실행
+  schedule:
+    # 매주 일요일 새벽 5시 (한국 시간 기준, UTC로는 토요일 20시)에 실행
+    - cron: '0 20 * * SAT'
+
+# 실행될 작업(Job) 정의
+jobs:
+  update-data:
+    # 작업이 실행될 환경 (Ubuntu 최신 버전)
+    runs-on: ubuntu-latest
+    
+    # 작업의 단계(Step)들
+    steps:
+      # 1. 저장소의 코드를 runner로 가져옴 (Checkout)
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      # 2. ✅ Node.js 환경 설정으로 변경
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          # Node.js 20 버전을 사용
+          node-version: '20'
+          # npm 패키지를 캐싱하여 속도 향상
+          cache: 'npm'
+
+      # 3. ✅ npm 패키지 설치 단계 추가
+      - name: Install dependencies
+        run: npm install
+
+      # 4. ✅ JavaScript 다운로더 스크립트 실행으로 변경
+      - name: Run JavaScript Downloader
+        run: node download.js
+
+      # 5. 변경된 데이터 파일을 Git에 다시 커밋 및 푸시
+      - name: Commit and push if changed
+        run: |
+          # 봇의 이름과 이메일 설정
+          git config --global user.name 'github-actions[bot]'
+          git config --global user.email 'github-actions[bot]@users.noreply.github.com'
+          # ✅ 변경된 파일 이름을 lotto_data.html로 수정
+          git add lotto_data.html
+          # 변경사항이 있을 경우에만 커밋
+          git diff
