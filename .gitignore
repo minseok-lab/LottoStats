@@ -31,3 +31,6 @@ Thumbs.db
 npm-debug.log*
 yarn-debug.log*
 yarn-error.log*
+
+# 워크플로우 실행 시 생성되는 임시 파일
+email-body.txt
