@@ -42,6 +42,24 @@ function renderApp() {
     }
 }
 
+// ✅ [추가] 추천 번호를 생성하고 화면에 표시하는 함수
+function displayRecommendedNumbers() {
+    // 데이터가 없으면 실행하지 않음
+    if (!state.allDraws || state.allDraws.length === 0) return;
+
+    const recommendedNumbers = generateRecommendedNumbers(state.allDraws);
+    
+    if (recommendedNumbers) {
+        const ballsHtml = recommendedNumbers.map(num => {
+            const color = getColorByNumber(num);
+            return `<div class="lotto-ball" style="background-color: ${color};">${num}</div>`;
+        }).join('');
+        recommendOutput.innerHTML = ballsHtml;
+    } else {
+        recommendOutput.innerHTML = `<span style="font-size: 16px; color: #868e96;">조건에 맞는 번호를 찾지 못했어요. 다시 시도해주세요.</span>`;
+    }
+}
+
 // DOM이 로드되면 애플리케이션 초기화
 document.addEventListener('DOMContentLoaded', async () => {
     // ---- 초기 데이터 로딩 ----
@@ -55,7 +73,12 @@ document.addEventListener('DOMContentLoaded', async () => {
         state.error = '데이터 로딩 중 오류가 발생했습니다.';
     } finally {
         state.isLoading = false;
-        renderApp(); // 성공하든 실패하든, state 기반으로 첫 화면 렌더링
+        renderApp(); // 통계 테이블과 버튼을 먼저 렌더링
+        
+        // ✅ [추가] 데이터 로딩 성공 시에만 추천 번호를 바로 표시
+        if (!state.error) {
+            displayRecommendedNumbers();
+        }
     }
 });
 
@@ -67,7 +90,7 @@ controls.addEventListener('click', (event) => {
     renderApp(); // 상태 변경 후 렌더링
 });
 
-recommendBtn.addEventListener('click', () => {
+recommendBtn.addEventListener('click', displayRecommendedNumbers, () => {
     const recommendedNumbers = generateRecommendedNumbers(state.allDraws);
     
     if (recommendedNumbers) {
