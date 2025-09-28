@@ -1,0 +1,144 @@
+/* css/style.css */
+
+/* 기본 스타일 */
+body {
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+    background-color: #f4f7f6;
+    color: #333;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 100vh;
+    margin: 0;
+    padding: 20px;
+    box-sizing: border-box;
+}
+#app {
+    width: 100%;
+    max-width: 900px;
+    background: #fff;
+    padding: 25px;
+    border-radius: 12px;
+    box-shadow: 0 4px M15px rgba(0,0,0,0.1);
+}
+h1 {
+    text-align: center;
+    color: #2c3e50;
+    margin-top: 0;
+    margin-bottom: 25px;
+}
+
+/* 기간 선택 버튼 스타일 */
+.controls {
+    text-align: center;
+    margin-bottom: 25px;
+}
+.controls button {
+    background-color: #e9ecef;
+    border: none;
+    border-radius: 6px;
+    padding: 10px 15px;
+    margin: 5px;
+    cursor: pointer;
+    font-size: 16px;
+    font-weight: 500;
+    transition: background-color 0.2s, color 0.2s;
+}
+.controls button:hover {
+    background-color: #ced4da;
+}
+.controls button.active {
+    background-color: #007bff;
+    color: white;
+}
+
+/* 확률 테이블 스타일 */
+#stats-table {
+    display: grid;
+    grid-template-columns: repeat(10, 1fr);
+    gap: 10px;
+}
+.stat-cell {
+    border: 1px solid #dee2e6;
+    border-radius: 8px;
+    padding: 10px;
+    text-align: center;
+    background-color: #f8f9fa;
+    transition: background-color 0.3s ease-in-out;
+}
+.stat-cell .number {
+    font-weight: bold;
+    font-size: 20px;
+    color: #495057;
+}
+.stat-cell .percentage {
+    font-size: 14px;
+    color: #868e96;
+    margin-top: 5px;
+}
+.loading {
+    text-align: center;
+    font-size: 18px;
+    color: #6c757d;
+}
+
+/* 추천 번호 섹션 스타일 */
+.recommend-section {
+    text-align: center;
+    margin-top: 30px;
+    padding-top: 20px;
+    border-top: 1px solid #e9ecef;
+}
+#recommend-btn {
+    background-color: #28a745;
+    color: white;
+    border: none;
+    border-radius: 8px;
+    padding: 12px 20px;
+    font-size: 18px;
+    cursor: pointer;
+    transition: background-color 0.2s;
+}
+#recommend-btn:hover {
+    background-color: #218838;
+}
+#recommend-output {
+    margin-top: 15px;
+    font-size: 24px;
+    font-weight: bold;
+    color: #007bff;
+    letter-spacing: 2px;
+    height: 45px; /* 높이를 고정하여 버튼 클릭 시 레이아웃 변경 방지 */
+    /* 공들을 가운데 정렬하기 위한 flex 설정 */
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 10px; /* 공 사이의 간격 */
+}
+
+/* 로또 번호 공 스타일 */
+.lotto-ball {
+    display: inline-flex;
+    justify-content: center;
+    align-items: center;
+    width: 40px;
+    height: 40px;
+    border-radius: 50%; /* 원 모양 */
+    color: white; /* 흰색 글씨 */
+    font-size: 18px;
+    font-weight: bold;
+}
+
+#stats-table .grid-full-width {
+    /* 이 한 줄이 그리드의 첫 열부터 마지막 열까지 모두 차지하게 만듭니다. */
+    grid-column: 1 / -1; 
+    
+    text-align: center;
+    font-size: 18px;
+    color: #6c757d;
+    padding: 20px 0;
+}
+
+#stats-table .grid-full-width.error {
+    color: red;
+}

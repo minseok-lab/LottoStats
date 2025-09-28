@@ -1,3 +1,5 @@
+// js/recommend.js
+
 // 1. 특정 기간의 데이터로 번호별 출현 횟수를 계산하는 헬퍼 함수
 function calculateFrequency(draws) {
     const frequency = {};
@@ -84,10 +86,10 @@ export function generateRecommendedNumbers(allDrawsData) {
         attempts++;
     }
 
+    // 개선 후
     if (!recommendedNumbers) {
-        alert("필터 조건을 만족하는 번호를 찾는 데 실패했습니다. 잠시 후 다시 시도해주세요.");
-        return null;
+        console.warn("필터 조건을 만족하는 번호 생성 실패");
+        return null; // alert 대신 null 반환
     }
-    
     return recommendedNumbers.sort((a, b) => a - b);
 }

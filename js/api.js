@@ -1,3 +1,5 @@
+// js/api.js
+
 // 서버에서 전체 회차 원본 데이터를 가져오는 함수
 export async function fetchData() {
     try {
@@ -10,8 +12,7 @@ export async function fetchData() {
         drawsData.sort((a, b) => a.drawNo - b.drawNo);
         return drawsData;
     } catch (error) {
-        console.error(error);
-        // 오류 발생 시 빈 배열을 반환하거나, 오류를 다시 던져서 처리할 수 있습니다.
-        return [];
+        console.error("API Fetch Error:", error);
+        throw error; // 오류 발생 시 에러를 호출한 쪽으로 다시 던짐
     }
 }

@@ -33,27 +33,53 @@ jobs:
       - name: Install dependencies
         run: npm install
 
-      # 4. JavaScript 다운로더 스크립트 실행
-      - name: Run JavaScript Downloader
-        run: node download.js
+      # 4. 데이터 다운로드 및 파일 추출
+      - name: Run Data Scripts
+        run: |
+          node download.js
+          node export-sql.js
+          node export-json.js
+      
+      # 5. 이메일 본문을 위한 추천 번호 생성
+      - name: Generate recommendation numbers for email
+        run: node generate-email-body.js
 
-      # 5. ✅ [추가] 데이터를 SQL 파일로 추출
-      - name: Export data to SQL
-        run: node export-sql.js
-
-      # 6. ✅ [추가] 데이터를 JSON 파일로 추출
-      - name: Export data to JSON
-        run: node export-json.js
-
-      # 7. 변경된 데이터 파일들을 Git에 다시 커밋 및 푸시
+      # 6. 변경된 데이터 파일들을 Git에 다시 커밋 및 푸시
       - name: Commit and push if changed
         run: |
           # 봇의 이름과 이메일 설정
           git config --global user.name 'github-actions[bot]'
           git config --global user.email 'github-actions[bot]@users.noreply.github.com'
-          # ✅ [수정] 생성된 모든 데이터 파일을 스테이징
+          # 생성된 모든 데이터 파일을 스테이징
           git add lotto_data.html lotto_data.sql lotto_data.json
           # 변경사항이 있을 경우에만 커밋
           git diff-index --quiet HEAD || git commit -m "📊 Lotto data updated automatically"
           # 저장소에 푸시
           git push
+
+      # 7. 파일 내용을 읽어서 결과 변수로 저장하는 단계
+      - name: Read email body from file
+        id: read_email_body # 이 단계의 ID를 지정
+        run: echo "EMAIL_BODY=$(cat email-body.txt)" >> $GITHUB_OUTPUT
+
+      # 8. 작업 성공 시 이메일 알림 보내기
+      - name: Send notification email on success
+        # 이전 단계들이 모두 성공했을 때만 실행
+        if: success()
+        uses: dawidd6/action-send-mail@v3
+        with:
+          # SMTP 서버 정보 (Gmail 예시)
+          server_address: smtp.gmail.com
+          server_port: 465
+          # 2단계에서 등록한 Secrets 정보 사용
+          username: ${{ secrets.MAIL_USERNAME }}
+          password: ${{ secrets.MAIL_PASSWORD }}
+          # 메일 제목
+          subject: '[성공] 로또 데이터 업데이트 및 이번주 추천 번호'
+          # 메일 본문
+          body: ${{ steps.read_email_body.outputs.EMAIL_BODY }}
+          # 받는 사람 이메일 주소
+          to: ${{ secrets.MAIL_USERNAME }}
+          # 보내는 사람 이메일 주소
+          from: GitHub Actions Bot <${{ secrets.MAIL_USERNAME }}>
+        
