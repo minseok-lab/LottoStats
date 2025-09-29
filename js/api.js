@@ -3,7 +3,7 @@
 // 서버에서 전체 회차 원본 데이터를 가져오는 함수
 export async function fetchData() {
     try {
-        const response = await fetch('/api/draws');
+        const response = await fetch('./lotto_data.json'); // 저장소에 있는 JSON 파일
         // 응답에 실패했을 경우 오류 메시지 표시
         if (!response.ok) {
             throw new Error('데이터를 불러오는데 실패했습니다.');
