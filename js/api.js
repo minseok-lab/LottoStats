@@ -4,6 +4,7 @@
 export async function fetchData() {
     try {
         const response = await fetch('/api/draws');
+        // 응답에 실패했을 경우 오류 메시지 표시
         if (!response.ok) {
             throw new Error('데이터를 불러오는데 실패했습니다.');
         }

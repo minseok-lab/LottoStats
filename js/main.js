@@ -1,16 +1,17 @@
 // js/main.js
 
+// import section
 import { fetchData } from './api.js';
 import { renderStats } from './ui.js';
 import { generateRecommendedNumbers } from './recommend.js';
 import { getColorByNumber } from './colors.js';
 
-// ✅ 1. 애플리케이션의 모든 데이터를 관리할 state 객체 선언
+// 애플리케이션의 모든 데이터를 관리할 state 객체 선언
 const state = {
     allDraws: [],       // 전체 원본 데이터
     currentPeriod: 'all', // 현재 선택된 기간
-    isLoading: true,
-    error: null,
+    isLoading: true, // 로딩이 완료되었을 경우
+    error: null, // 오류 메시지가 없을 경우
 };
 
 // DOM 요소 가져오기 (전역에서 관리)
@@ -19,7 +20,7 @@ const statsTable = document.getElementById('stats-table');
 const recommendBtn = document.getElementById('recommend-btn');
 const recommendOutput = document.getElementById('recommend-output');
 
-// ✅ 2. state를 기반으로 전체 화면을 다시 그리는 함수
+// state를 기반으로 전체 화면을 다시 그리는 함수
 function renderApp() {
     // ---- 기간 선택 버튼 렌더링 ----
     controls.querySelectorAll('button').forEach(btn => {
@@ -75,27 +76,28 @@ document.addEventListener('DOMContentLoaded', async () => {
         state.isLoading = false;
         renderApp(); // 통계 테이블과 버튼을 먼저 렌더링
         
-        // ✅ [추가] 데이터 로딩 성공 시에만 추천 번호를 바로 표시
+        // 데이터 로딩 성공 시에만 추천 번호를 바로 표시
         if (!state.error) {
             displayRecommendedNumbers();
         }
     }
 });
 
-
-// ✅ 3. 모든 이벤트 리스너는 이제 state를 변경하고 renderApp()만 호출
+// 모든 이벤트 리스너는 이제 state를 변경하고 renderApp()만 호출
 controls.addEventListener('click', (event) => {
     if (event.target.tagName !== 'BUTTON') return;
     state.currentPeriod = event.target.dataset.period;
     renderApp(); // 상태 변경 후 렌더링
 });
 
+// 클릭되었을때나 로딩되었을 때 실행합니다.
 recommendBtn.addEventListener('click', displayRecommendedNumbers, () => {
     const recommendedNumbers = generateRecommendedNumbers(state.allDraws);
     
     if (recommendedNumbers) {
         const ballsHtml = recommendedNumbers.map(num => {
             const color = getColorByNumber(num);
+            // 번호를 정의된 도형과 색상에 맞게 변환하여 생성합니다.
             return `<div class="lotto-ball" style="background-color: ${color};">${num}</div>`;
         }).join('');
         recommendOutput.innerHTML = ballsHtml;

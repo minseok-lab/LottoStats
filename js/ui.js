@@ -53,7 +53,7 @@ export function renderStats(drawsToAnalyze, statsTableElement) {
         const rank = rankMap.get(i);
         const backgroundColor = getGradientColor(rank);
 
-        // ✅ 바로 이 HTML 구조가 CSS 그리드 스타일을 적용받는 핵심 부분입니다.
+        // CSS 그리드 스타일을 적용받는 HTML 구조
         return `
             <div class="stat-cell" style="background-color: ${backgroundColor};">
                 <div class="number">${i}</div>

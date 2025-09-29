@@ -1,6 +1,6 @@
 // js/colors.js
 
-// 색상 팔레트 정의
+// 색상 팔레트 정의, 동행복권 색상 사용
 const COLOR_PALETTE = {
     YELLOW: '#FBC400',
     BLUE: '#69C8F2',
