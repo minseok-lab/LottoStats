@@ -1,1 +1,7 @@
+# 이제 .sql 파일을 정상적으로 추적합니다.
 *.sql linguist-detectable=true
+
+# 자동 생성된 데이터 파일을 언어 통계에서 제외합니다.
+lotto_data.html linguist-generated=true
+lotto_data.json linguist-generated=true
+lotto_data.sql linguist-generated=true
