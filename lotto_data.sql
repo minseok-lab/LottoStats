@@ -13,6 +13,7 @@ CREATE TABLE lotto_draws (
 );
 
 -- 데이터 삽입 시작 --
+INSERT INTO lotto_draws (draw_no, num1, num2, num3, num4, num5, num6, bonus_no) VALUES (1196, 8, 12, 15, 29, 40, 45, 14);
 INSERT INTO lotto_draws (draw_no, num1, num2, num3, num4, num5, num6, bonus_no) VALUES (1195, 3, 15, 27, 33, 34, 36, 37);
 INSERT INTO lotto_draws (draw_no, num1, num2, num3, num4, num5, num6, bonus_no) VALUES (1194, 3, 13, 15, 24, 33, 37, 2);
 INSERT INTO lotto_draws (draw_no, num1, num2, num3, num4, num5, num6, bonus_no) VALUES (1193, 6, 9, 16, 19, 24, 28, 17);
